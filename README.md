@@ -8,6 +8,8 @@ This is the server-side made on top of NodeJS and SockJS.
 ```
 npm install node-uuid
 npm install underscore
+npm install sockjs
+npm install express
 ```
 
 ## Run the service

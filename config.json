@@ -1,0 +1,19 @@
+{
+    "name": "pushy-node",
+    "port": 8234,
+    
+    "secretKey": "mySuperSecretKey",
+    
+    "ssl": false,
+    "sslKey": null,
+    
+    "sockjs": {
+       "prefix": "/pushy/socket",
+       "sockjs_url": "http://cdn.sockjs.org/sockjs-0.3.min.js",
+       "websocket": true,
+       "response_limit": "128K",
+       "jsessionid": false,
+       "heartbeat_delay": 25,
+       "disconnect_delay": 5
+    }
+}
