@@ -1,27 +1,35 @@
+//
+// Pushy
+// (c) 2013-2014, Julien Ballestracci - Spokela
+// Licensed under the MIT license (@see LICENSE)
+//
 
-/*!
- * pushy.js
- * Copyright(c) 2012 Julien Ballestracci <julien@nitronet.org>
- * MIT Licensed
- */
-
-var pushy = module.exports = require('./lib/pushy'),
+var pushy = require('./lib/pushy'),
     file  = require("fs"),
     cfgFile = (process.argv[2] || null);
-    
-if(cfgFile == null) {
-    throw new Error("No config file specified.");
-}
 
+// configuration stuff
+if (cfgFile == null) {
+    throw new Error("syntax is: node pushy-server.js <path-to-config.json>");
+}
 try {
     var config = JSON.parse(file.readFileSync(cfgFile));
 } catch(err) {
-    throw new Error("Error parsing config file: "+ err);
+    throw new Error("bogus config file: "+ err);
 }
 
-pushy.init(config, {
-   subscribe: require('./commands/subscribe').callback,
-   unsubscribe: function(sockjs, data, manager) {
-    console.log('UNSUBSCRIBE');
-   }
-});
+// Initialize/launch the server and register commands callbacks.
+// Commands are functions accessible from client-side. They allow the user to
+// perform various actions throught his sockjs connection. Pushy comes with only
+// two obvious commands: SUBSCRIBE and UNSUBSCRIBE.
+pushy.init(
+    // configuration
+    config, 
+    // commands callbacks
+    {
+        subscribe: require('./commands/subscribe').callback,
+        unsubscribe: function(sockjs, connection, data, channels) {
+            console.log('UNSUBSCRIBE');
+        }
+    }
+);

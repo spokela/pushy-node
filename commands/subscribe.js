@@ -41,6 +41,17 @@ exports.callback = function(sockjs, connection, data, channels) {
         chan = new Channel(data.channel);
         chan.presenceEnabled = presenceEnabled;
         channels.add(data.channel, chan);
+        
+        console.log('[channel: '+ data.channel +'] channel created.');
+
+        chan.on('member:add', function(memberId) {
+            console.log('[channel: '+ data.channel +'] member added: '+ memberId +' (total: '+ chan.countMembers().toString() +')');
+        });
+        
+        chan.on('member:quit', function(memberId, reason) {
+           console.log('[channel: '+ data.channel +'] member removed: '+ memberId +' - reason: '+ reason); 
+        });
+        
     } else {
         presenceEnabled = chan.presenceEnabled;
     }
@@ -54,5 +65,8 @@ exports.callback = function(sockjs, connection, data, channels) {
         return;
     }
     
-    chan.subscribe(connection, (presenceEnabled ? data.data : undefined));
+    data = chan.subscribe(connection, (presenceEnabled ? data.data : undefined));
+    
+    // send confirmation to client
+    sockjs.sendEvent(connection, events.PUSHY_SUBSCRIPTION_SUCCESS, data);
 };
