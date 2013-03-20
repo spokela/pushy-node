@@ -1,0 +1,35 @@
+{
+  "name": "pushy-server",
+  "description": "Publish-Subscribe system for realtime webapps",
+  "version": "1.0.0",
+  "author": {
+    "name": "Julien Ballestracci",
+    "email": "julien@nitronet.org"
+  },
+  "dependencies": {
+    "express": "3.1.0",
+    "node-uuid": "1.4.0",
+    "sockjs": "0.3.5"
+  },
+  "keywords": [
+    "pushy",
+    "realtime",
+    "system",
+    "web",
+    "publish",
+    "subscribe",
+    "pubsub",
+    "api"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/spokela/pushy-node"
+  },
+  "main": "./lib/pushy",
+  "engines": {
+    "node": "*"
+  },
+  "readmeFilename": "README.md",
+  "license": "MIT",
+  "preferGlobal": "false"
+}
