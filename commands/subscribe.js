@@ -13,7 +13,7 @@ exports = module.exports = function(sockjs, connection, data, channels) {
         
     // require auth
     var chan = (channels.get(data.channel) || new Channel(data.channel));
-    if(data.channel.indexOf('private-') === 0) {
+    if(chan.authRequired === true) {
         if(data.auth === undefined || data.auth.trim() == "") {
             sockjs.sendEvent(connection, events.PUSHY_NEEDAUTH, {
                 channel: data.channel
