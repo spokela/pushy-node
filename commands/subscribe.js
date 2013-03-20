@@ -12,7 +12,7 @@ exports = module.exports = function(sockjs, connection, data, channels) {
     }
         
     // require auth
-    var presenceEnabled = false;
+    var presenceEnabled = false, chan = channels.get(data.channel);
     if(data.channel.indexOf('private-') === 0) {
         if(data.auth === undefined || data.auth.trim() == "") {
             sockjs.sendEvent(connection, events.PUSHY_NEEDAUTH, {
@@ -22,7 +22,7 @@ exports = module.exports = function(sockjs, connection, data, channels) {
             return;
         }
             
-        if(data.auth !== channels.verifyAuth(connection, data.channel, data.data)) {
+        if(!chan || data.auth !== chan.verifyAuth(connection, data.data)) {
             sockjs.sendEvent(connection, events.PUSHY_SUBSCRIPTION_FAILED, {
                 channel: data.channel,
                 reason: 'Invalid credentials'
@@ -36,7 +36,6 @@ exports = module.exports = function(sockjs, connection, data, channels) {
         }
     }
         
-    var chan = channels.get(data.channel);
     if(!chan) {
         chan = new Channel(data.channel);
         chan.presenceEnabled = presenceEnabled;
