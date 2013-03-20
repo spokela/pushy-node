@@ -47,7 +47,7 @@ pushy.init(
 Run the service:
 
 ```
-$ node pushy-server.js config.json
+$ node pushy-server.js
 ```
 
 # Usage
