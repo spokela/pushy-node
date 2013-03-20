@@ -12,7 +12,7 @@ exports = module.exports = function(sockjs, connection, data, channels) {
     }
         
     // require auth
-    var presenceEnabled = false, chan = channels.get(data.channel);
+    var chan = (channels.get(data.channel) || new Channel(data.channel));
     if(data.channel.indexOf('private-') === 0) {
         if(data.auth === undefined || data.auth.trim() == "") {
             sockjs.sendEvent(connection, events.PUSHY_NEEDAUTH, {
@@ -22,7 +22,7 @@ exports = module.exports = function(sockjs, connection, data, channels) {
             return;
         }
             
-        if(!chan || data.auth !== chan.verifyAuth(connection, data.data)) {
+        if(data.auth !== chan.verifyAuth(connection, data.data, channels.secretKey)) {
             sockjs.sendEvent(connection, events.PUSHY_SUBSCRIPTION_FAILED, {
                 channel: data.channel,
                 reason: 'Invalid credentials'
@@ -31,14 +31,12 @@ exports = module.exports = function(sockjs, connection, data, channels) {
             return;
         }
         
-        if(data.data !== undefined) {
-            presenceEnabled = true;
+        if(data.data !== undefined && !channels.exists(data.channel)) {
+            chan.presenceEnabled = true;
         }
     }
         
-    if(!chan) {
-        chan = new Channel(data.channel);
-        chan.presenceEnabled = presenceEnabled;
+    if(!channels.exists(data.channel)) {
         channels.add(data.channel, chan);
         
         console.log('[channel: '+ data.channel +'] channel created.');
@@ -64,7 +62,7 @@ exports = module.exports = function(sockjs, connection, data, channels) {
         return;
     }
     
-    data = chan.subscribe(connection, (presenceEnabled ? data.data : undefined));
+    data = chan.subscribe(connection, (chan.presenceEnabled ? data.data : undefined));
     
     // send confirmation to client
     sockjs.sendEvent(connection, events.PUSHY_SUBSCRIPTION_SUCCESS, data);
