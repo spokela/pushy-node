@@ -49,9 +49,7 @@ exports = module.exports = function(sockjs, connection, data, channels) {
            console.log('[channel: '+ data.channel +'] member removed: '+ memberId +' - reason: '+ reason); 
         });
         
-    } else {
-        presenceEnabled = chan.presenceEnabled;
-    }
+    } 
     
     if(chan.hasMember(connection)) {
         sockjs.sendEvent(connection, events.PUSHY_SUBSCRIPTION_FAILED, {
