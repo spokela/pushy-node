@@ -52,7 +52,7 @@ auth_key: d7f4c3309757c4025269b6576eae10028ec0711c88e6ef605bb44d149cb07803
 
 ## Private and Presence-enabled Channels
 
-Any channel named ```private-````something will require an authentification string sent on subscription. If any complementary data is sent, *presence* will be enabled too (this data will be shared between channel members). 
+Any channel named ```private-```something will require an authentification string sent on subscription. If any complementary data is sent, *presence* will be enabled too. 
 
 ### Authentication
 
