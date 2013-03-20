@@ -1,11 +1,7 @@
 {
-    "name": "pushy-node",
     "port": 8234,
-    
     "secretKey": "mySuperSecretKey",
-    
     "ssl": false,
-    "sslKey": null,
     
     "sockjs": {
        "prefix": "/pushy/socket",

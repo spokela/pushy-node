@@ -1,7 +1,7 @@
 var Channel = require('../lib/channel'),
     events = require('../lib/events');
 
-exports.callback = function(sockjs, connection, data, channels) {
+exports = module.exports = function(sockjs, connection, data, channels) {
     if(!data.channel) {
         sockjs.sendEvent(connection, events.PUSHY_ERROR, {
             message: "No channel specified",

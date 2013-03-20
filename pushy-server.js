@@ -27,9 +27,8 @@ pushy.init(
     config, 
     // commands callbacks
     {
-        subscribe: require('./commands/subscribe').callback,
-        unsubscribe: function(sockjs, connection, data, channels) {
-            console.log('UNSUBSCRIBE');
-        }
+        subscribe: require('./commands/subscribe'),
+        unsubscribe: require('./commands/unsubscribe')
+        // add your commands here to extend functionnality of your pushy-server
     }
 );
