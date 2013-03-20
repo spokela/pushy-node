@@ -1,5 +1,5 @@
 {
-  "name": "pushy-server",
+  "name": "pushy",
   "description": "Publish-Subscribe system for realtime webapps",
   "version": "1.0.0",
   "author": {

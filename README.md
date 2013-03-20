@@ -3,21 +3,54 @@
 Pushy is a Publish/Subscribe system for realtime web applications. 
 This is the server-side made on top of NodeJS and SockJS.
 
-## Install node modules
+## Install via NPM
 
 ```
-npm install node-uuid
-npm install sockjs
-npm install express
+npm install pushy
 ```
 
-## Run the service
+Create a bootstrap-file ```pushy-server.js```:
 
-### Start NodeJS/Pushy:
+```javascript
+var pushy = require('pushy');
+
+// Initialize/launch the server and register commands callbacks.
+// Commands are functions accessible from client-side. They allow the user to
+// perform various actions throught his sockjs connection. Pushy comes with only
+// two commands: SUBSCRIBE and UNSUBSCRIBE.
+pushy.init(
+    // configuration
+    {
+        "port": 8234,
+        "secretKey": "mySuperSecretKey",
+        "ssl": false,
+
+        "sockjs": {
+           "prefix": "/pushy/socket",
+           "sockjs_url": "http://cdn.sockjs.org/sockjs-0.3.min.js",
+           "websocket": true,
+           "response_limit": "128K",
+           "jsessionid": false,
+           "heartbeat_delay": 25,
+           "disconnect_delay": 5
+        }
+    }, 
+    // commands callbacks
+    {
+        subscribe: require('./node_modules/pushy/commands/subscribe'),
+        unsubscribe: require('./node_modules/pushy/commands/unsubscribe')
+        // add your commands here to extend functionnality of your pushy-server
+    }
+);
+```
+
+Run the service:
 
 ```
 $ node pushy-server.js config.json
 ```
+
+# Usage
 
 ### Trigger an event on a channel
 
