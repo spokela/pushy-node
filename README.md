@@ -13,8 +13,41 @@ npm install express
 
 ## Run the service
 
+### Start NodeJS/Pushy:
+
 ```
-node pushy-server.js config.json
+$ node pushy-server.js config.json
+```
+
+### Trigger an event on a channel
+
+To trigger an event on a specific channel, hit the following URL with the required parameters. POST data will be sent alongside the event.
+
+``` 
+http(s)://<pushy-host>:<pushy-port>/pushy/channel/<channel-name>/trigger?event=<event-name>&timestamp=<current-ts>&auth_key=<auth-key>
+``` 
+
+Parameters:
+* ```pushy-host``` : the hostname of your Pushy server
+* ```pushy-port``` : the listening port you defined in *config.json*
+* ```channel-name``` : name of the channel where the event should be dispatched
+* ```event-name``` : name of the event
+* ```current-ts``` : your app's timestamp (UNIXTIME). 600 seconds difference (+/-) is tolerated.
+* ```auth-key``` : SHA256 auth key for this command (read more bellow)
+
+### Generating authentication key
+
+The authentication key is a SHA256 sum of:
+
+```
+<channel>:<event>:<timestamp>:<JsonEncodedBody>:<secretKey>
+``` 
+
+Example: we want to send a *test* event to the *hello* channel, the current timestamp is *123456789* and we don't send any data. Our secret key is *secret*.
+
+```
+signature string: hello:test:123456789:{}:secret
+auth_key: d7f4c3309757c4025269b6576eae10028ec0711c88e6ef605bb44d149cb07803
 ```
 
 ## Configuration parameters
