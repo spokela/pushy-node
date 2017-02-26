@@ -3,10 +3,12 @@
 Pushy is a Publish/Subscribe system for realtime web applications. 
 This is the server-side made on top of NodeJS and SockJS.
 
+UNMAINTAINED / OBSOLETE
+
 ## Install via NPM
 
 ```
-npm install pushy
+npm install DEPRECATED
 ```
 
 Create a bootstrap-file ```pushy-server.js```:
